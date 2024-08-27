@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # This loads variables from the .env file into the environment
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -59,7 +63,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'divyesh.thirukonda@gmail.com'
-EMAIL_HOST_PASSWORD = '0000822233.exe'
+EMAIL_HOST_PASSWORD = os.getenv('email')
+
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
@@ -112,7 +117,8 @@ WSGI_APPLICATION = 'myportfolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'sqlitecloud://cyeoodp3sz.sqlite.cloud:8860?apikey=csFjpQfBYaFHSjq5YweVvyd6fq316shuAZzLuNzQkf8',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
