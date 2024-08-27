@@ -1,5 +1,4 @@
 .env
-*.sqlite3
 
 /media/
 myportfolio/__pycache__/
