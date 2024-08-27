@@ -73,6 +73,7 @@ def home(request):
         'watchlist': watchlist_data
     })
 
+@login_required
 def quote_detail(request, symbol):
     stock_data = fetch_companyQuote(symbol)  #.split(':')[0]
     if stock_data:
@@ -105,6 +106,7 @@ def remove_from_watchlist(request, symbol):
     return redirect('home')
 
 
+@login_required
 def search(request):
     keyword = request.GET.get('keyword', '')
     results = fetch_searchResults(keyword)
