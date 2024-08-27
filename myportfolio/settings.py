@@ -117,8 +117,10 @@ WSGI_APPLICATION = 'myportfolio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': 'sqlitecloud://cyeoodp3sz.sqlite.cloud:8860?apikey=csFjpQfBYaFHSjq5YweVvyd6fq316shuAZzLuNzQkf8',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'NAME': 'sqlitecloud://cyeoodp3sz.sqlite.cloud:8860?apikey=csFjpQfBYaFHSjq5YweVvyd6fq316shuAZzLuNzQkf8', # dev
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'sqlitecloud://nbgfovpqik.sqlite.cloud:8860?apikey=csFjpQfBYaFHSjq5YweVvyd6fq316shuAZzLuNzQkf8', # deploy
+        
     }
 }
 
