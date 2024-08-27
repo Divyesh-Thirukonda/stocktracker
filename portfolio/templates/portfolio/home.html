@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Portfolio</title>
+    <style>
+        body {
+            background-color: #121212; /* Dark background */
+            color: white; /* Default text color */
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1, h2 {
+            margin: 0;
+            text-align: center;
+            flex-grow: 1;
+            color: #00FF00; /* Green text for titles */
+        }
+        header h1 {
+            text-align: left;
+        }
+        .footer {
+            background-color: #1E1E1E; /* Dark footer background */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            overflow: hidden; /* Hide overflow content */
+            white-space: nowrap; /* Prevent text wrapping */
+            box-sizing: border-box;
+        }
+        header p {
+            margin: 0;
+        }
+
+        /* Scrolling Content */
+        .footer-content {
+            animation: scroll-left 50s linear infinite;
+        }
+
+        /* Keyframes for scrolling animation */
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(100%); /* Start with text off-screen to the right */
+            }
+            100% {
+                transform: translateX(-100%); /* End with text off-screen to the left */
+            }
+        }
+
+        
+        header a {
+            color: #ffffff;
+            margin-left: 10px;
+        }
+
+        #search-form {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            margin-bottom: -5%;
+        }
+
+        #search-input {
+            width: 300px;
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 8px rgba(0, 0, 0, 0.24);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: #007aff;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 8px rgba(0, 122, 255, 0.5);
+        }
+
+        #search-input::placeholder {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .gainers-losers {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .gainers, .losers {
+            width: 48%;
+            /* background-color: white; */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .gainers h2, .losers h2 {
+            text-align: center;
+        }
+        .gainers ul, .losers ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .gainers li, .losers li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .gainers li span, .losers li span {
+            width: 20%;
+            text-align: center;
+        }
+
+        .watchlist {
+            margin-top: 20px;
+        }
+
+        .watchlist h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .watchlist ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .watchlist li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            margin: 10px;
+            /* width: fit-content; */
+        }
+
+        .watchlist .ticker {
+            background-color: black;
+            color: white;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .watchlist .price, .watchlist .change, .watchlist .change-percent {
+            margin-left: 10px;
+        }
+
+        .watchlist .change {
+            padding: 5px 10px;
+            /* color: red; */
+        }
+
+        .watchlist .change-percent {
+            /* background-color: #f8d7da; */
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .watchlist .remove-btn {
+            background-color: white;
+            color: black;
+            margin-left: auto;
+            border-radius: 10%;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            line-height: 30px;
+            cursor: pointer;
+        }
+        .content-container {
+            max-width: 40vw; /* Maximum width of the content */
+            margin: 0 auto; /* Centers the container horizontally */
+            padding: 20px; /* Adds padding around the content */
+        }
+        .content-container-forex {
+            max-width: 30vw; /* Maximum width of the content */
+            margin: 0 auto; /* Centers the container horizontally */
+            padding: 20px; /* Adds padding around the content */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Home</h1>
+        {% if user.is_authenticated %}
+            <p>Welcome, {{ user.first_name }} |</p>
+            <p><a href="{% url 'account_logout' %}">Logout</a></p>
+        {% else %}
+            <p>Welcome, Guest |</p>
+            <p><a href="{% url 'account_login' %}">Login</a> or <a href="{% url 'account_signup' %}">Sign Up</a></p>
+        {% endif %}
+    </header>
+    
+    {% if user.is_authenticated %}
+        <!-- Search Bar -->
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Enter ticker symbol or company name" required>
+        </form>
+
+        
+        <div class="content-container" style="margin-top: 5%; margin-bottom: 1%;">
+            <div class="watchlist">
+                <ul id="results-wrapper">
+                </ul>
+            </div>
+        </div>
+        
+        <div class="content-container" style="margin-top: -5%;">
+            <div class="watchlist">
+                <h2>Your Watchlist</h2>
+                <ul>
+                    {% for item in watchlist %}
+                        <li>
+                            <a style="text-decoration: none;" class="ticker" href="{% url 'quote' item.symbol %}">{{ item.symbol }}</a>
+                            <span style="font-weight: bold; " class="price">${{ item.price|floatformat:2 }}</span>
+
+                            {% if item.is_up %}
+                                <span class="change" style="font-weight: bold; color: green;">+{{ item.change|floatformat:2 }}</span>
+                            {% else %}
+                                <span class="change" style="font-weight: bold; color: rgb(165, 14, 14);">{{ item.change|floatformat:2 }}</span>
+                            {% endif %}
+                            
+                            {% if item.is_up %}
+                                <span class="change-percent" style="font-weight: bold; color: green; background-color: #ccffcc;">+{{ item.change_percent|floatformat:2 }}%</span>
+                            {% else %}
+                                <span class="change-percent" style="font-weight: bold; color: rgb(165, 14, 14); background-color: rgb(238, 160, 153);">{{ item.change_percent|floatformat:2 }}%</span>
+                            {% endif %}
+
+                            <form action="{% url 'remove_from_watchlist' item.symbol %}" method="post" >
+                                {% csrf_token %}
+                                <button class="remove-btn" type="submit">X</button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <p>Create an account or <a href="{% url 'account_login' %}">Sign in</a> to search and get watchlist (API Credit reasons).</p>
+    {% endif %}
+
+    <div class="gainers-losers">
+        <div class="gainers">
+            <h2>Top Gainers</h2>
+            <ul>
+                {% for gainer in top_gainers %}
+                    <li>
+                        <a>{{ gainer.ticker }}</a>
+                        <span>{{ gainer.price }}</span>
+                        <span>{{ gainer.change_amount }}</span>
+                        <span>{{ gainer.change_percentage }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="losers">
+            <h2>Top Losers</h2>
+            <ul>
+                {% for loser in top_losers %}
+                    <li>
+                        <a>{{ loser.ticker }}</a>
+                        <span>{{ loser.price }}</span>
+                        <span>{{ loser.change_amount }}</span>
+                        <span>{{ loser.change_percentage }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    
+    <div class="content-container-forex">
+        <div class="watchlist">
+            <h2>Forex Data</h2>
+            <ul>
+                {% if forex_data %}
+                <li style="height: 5vh;">
+                        <p style="text-decoration: none;" class="ticker">USD to EUR</p>
+                        <span style="font-weight: bold; " class="price">${{ forex_data.usd.eur|floatformat:2 }}</span>
+                    </li>
+                    <li style="height: 5vh;">
+                        <p style="text-decoration: none;" class="ticker">USD to JPY</p>
+                        <span style="font-weight: bold; " class="price">${{ forex_data.usd.jpy|floatformat:2 }}</span>
+                    </li>
+                    <li style="height: 5vh;">
+                        <p style="text-decoration: none;" class="ticker">USD to GBP</p>
+                        <span style="font-weight: bold; " class="price">${{ forex_data.usd.gbp|floatformat:2 }}</span>
+                    </li>
+                    <li style="height: 5vh;">
+                        <p style="text-decoration: none;" class="ticker">USD to CAD</p>
+                        <span style="font-weight: bold; " class="price">${{ forex_data.usd.cad|floatformat:2 }}</span>
+                    </li>
+                    <li style="height: 5vh;">
+                        <p style="text-decoration: none;" class="ticker">USD to AUD</p>
+                        <span style="font-weight: bold; " class="price">${{ forex_data.usd.aud|floatformat:2 }}</span>
+                    </li>
+                {% else %}
+                    <li>API Error. Refresh Screen</li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            {% if article_title %}
+                {{ article_title.title }}
+            {% else %}
+                No article title available.
+            {% endif %}
+        </div>
+    </footer>
+
+    <script>
+        // Check if the search form exists before attaching event listeners
+        const searchForm = document.getElementById('search-form');
+        
+        if (searchForm) {
+            searchForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Prevent form submission
+
+                const keyword = document.getElementById('search-input').value;
+
+                // Clear previous results
+                const resultsWrapper = document.getElementById('results-wrapper');
+                resultsWrapper.innerHTML = '';
+
+                // Fetch search results via AJAX
+                fetch(`/search/?keyword=${keyword}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(item => {
+                            const resultDiv = document.createElement('li');
+                            resultDiv.className = 'result-item';
+                            resultDiv.style = 'height: 5vh;';
+                            resultDiv.innerHTML = `
+                            <a style="text-decoration: none;" class="ticker" href="/quote/${item.symbol}">${item.symbol}:${item.exchange}</a>
+                            <span style="font-weight: bold; " class="price">${ item.instrument_name }</span>
+                            `;
+                            resultsWrapper.appendChild(resultDiv);
+                        });
+                        if (data.length === 0) {
+                            
+                            const resultDiv = document.createElement('li');
+                            resultDiv.className = 'result-item';
+                            resultDiv.style = 'height: 5vh;';
+                            resultDiv.innerHTML = `
+                                <p>No Results... Try Searching Ticker Symbol...</p>
+                                <p>The API might be on cooldown, so come back in an hour if nothing works</p>
+                                `;
+                            resultsWrapper.appendChild(resultDiv);
+                        }
+                    })
+                    .catch(error => console.error('Error fetching search results:', error));
+            });
+        }
+    </script>
+</body>
+</html>
